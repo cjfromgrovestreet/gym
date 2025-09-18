@@ -1,0 +1,138 @@
+/* src/styles/app.css  — light “studentski” UI */
+/* Reset/vars */
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; }
+:root{
+  --bg-page: #f6f7fb;
+  --txt: #1f2937;
+  --muted: #6b7280;
+  --card: #ffffff;
+  --brd: #e5e7eb;
+  --primary: #2563eb;
+  --primary-600: #1d4ed8;
+  --shadow: 0 10px 25px rgba(0,0,0,.06);
+  --radius: 14px;
+}
+
+body{
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background: var(--bg-page);
+  color: var(--txt);
+  line-height: 1.55;
+}
+
+.wrap { max-width: 1140px; margin: 24px auto 48px; padding: 0 16px; }
+
+/* NAV (ostavi svoj Nav.jsx, samo stilovi) */
+.nav{
+  display:flex; align-items:center; gap:10px;
+  background:#fff; border:1px solid var(--brd); border-radius: var(--radius);
+  padding:10px 12px; box-shadow: var(--shadow);
+}
+.nav__brand{ font-weight:800; }
+.nav__spacer{ flex:1; }
+.nav-btn{
+  height:36px; border-radius:10px; padding:0 12px; cursor:pointer;
+  border:1px solid var(--brd); background:#fff; color:var(--txt);
+}
+.nav-btn--active{ background:#eef2ff; border-color:#c7d2fe; }
+
+/* PAGE background (per-stranica) */
+.page{
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--brd);
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+.page::before{
+  content:"";
+  position:absolute; inset:-10px;
+  background-image: var(--bg, none);
+  background-size: cover; background-position: center;
+  filter: blur(10px) saturate(1.1);
+  opacity: .25;
+}
+.page-inner{
+  position: relative;
+  padding: 20px;
+}
+
+/* HERO */
+.hero{
+  display:grid; grid-template-columns: 1.3fr 1fr; gap:18px; align-items:center;
+}
+.hero__text .ttl{ margin:0 0 6px; font-size: 28px; font-weight: 800; }
+.sub{ color: var(--muted); font-size: 14px; }
+
+/* GRID KARTICE */
+.card-grid{
+  margin-top: 12px;
+  display:grid; grid-template-columns: repeat(3, 1fr); gap:16px;
+}
+@media (max-width: 960px){
+  .hero{ grid-template-columns: 1fr; }
+  .card-grid{ grid-template-columns: 1fr; }
+}
+
+/* CARD */
+.card{
+  background: var(--card);
+  border: 1px solid var(--brd);
+  border-radius: var(--radius);
+  padding: 12px;
+  box-shadow: var(--shadow);
+}
+.card--link{ padding: 0; overflow: hidden; display:flex; flex-direction:column; }
+.card__img{
+  height: 160px; background-size: cover; background-position: center;
+}
+.card__body{ padding: 12px; display:grid; gap:6px; }
+.card__body h3{ margin:0; font-size: 18px; }
+
+/* FORM ELEMENTS */
+.inp, select, textarea{
+  width:100%;
+  border:1px solid var(--brd);
+  background:#fff;
+  color:var(--txt);
+  border-radius: 10px;
+  padding:10px 12px;
+  font-size:14px; outline:none;
+}
+.inp:focus, select:focus, textarea:focus{
+  border-color:#c7d2fe;
+  box-shadow: 0 0 0 3px rgba(199,210,254,.6);
+}
+textarea{ min-height: 90px; resize: vertical; }
+
+.row{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.two-col{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+@media (max-width: 720px){ .two-col{ grid-template-columns: 1fr; } }
+
+.divider{ height:1px; background: var(--brd); margin: 12px 0; }
+
+.btn, .btn-secondary{
+  height: 38px; padding:0 14px; font-weight:700; border-radius:10px; cursor:pointer; border:1px solid transparent;
+}
+.btn{
+  background: linear-gradient(180deg, var(--primary), var(--primary-600));
+  color:#fff; border-color: #1e40af;
+}
+.btn:hover{ filter: brightness(1.05); }
+.btn:disabled{ opacity:.6; cursor:not-allowed; }
+
+.btn-secondary{
+  background: #fff; color: var(--primary);
+  border:1px solid #bfdbfe;
+}
+.btn-secondary:hover{ background:#eff6ff; }
+
+.h1{ margin:0 0 6px; font-size: 22px; font-weight: 800; }
+.muted{ color: var(--muted); font-size: 13px; }
+
+/* Pomoćne list-e */
+ul{ padding-left: 18px; margin: 8px 0 0; }
+li + li { margin-top: 4px; }

@@ -1,0 +1,78 @@
+name: gym-buddy
+
+services:
+  gym-buddy-db:
+    image: amazon/dynamodb-local
+    container_name: gym-buddy-db
+    user: "0:0"
+    command:
+      [
+        "-jar",
+        "DynamoDBLocal.jar",
+        "-sharedDb",
+        "-dbPath",
+        "/home/dynamodblocal/data",
+      ]
+    ports:
+      - "8000:8000"
+    volumes:
+      - gym-buddy_data:/home/dynamodblocal/data
+    restart: unless-stopped
+    networks:
+      - gym-buddy-net
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    image: gym-buddy-backend:local
+    container_name: gym-buddy-backend
+    depends_on:
+      - gym-buddy-db
+    env_file:
+      - ./server/.env
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./server/src:/app/src
+    restart: unless-stopped
+    networks:
+      - gym-buddy-net
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3000/health || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    image: gym-buddy-frontend:local
+    container_name: gym-buddy-frontend
+    depends_on:
+      server:
+        condition: service_started
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./client/src:/app/src
+    restart: unless-stopped
+    environment:
+      - VITE_API_URL=http://localhost:3000
+    networks:
+      - gym-buddy-net
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:5173/ || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  gym-buddy_data:
+
+networks:
+  gym-buddy-net:
+    driver: bridge

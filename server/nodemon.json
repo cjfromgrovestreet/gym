@@ -1,0 +1,7 @@
+{
+  "watch": ["src"],
+  "ext": "mjs,js,json",
+  "exec": "node src/server.mjs",
+  "legacyWatch": true,
+  "verbose": true
+}
